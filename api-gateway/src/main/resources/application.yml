@@ -1,0 +1,33 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: ${GATEWAY_CONNECT_TIMEOUT:5000}
+        response-timeout: ${GATEWAY_RESPONSE_TIMEOUT:5s}
+      default-filters:
+        - name: Retry
+          args:
+            # https://cloud.spring.io/spring-cloud-gateway/reference/html/#the-retry-gatewayfilter-factory
+            # ?????? ???? ???????????? ?? ?????????:
+            # series: 5XX series
+            # ?????? ?????? ???????????? ?? ?????????:
+            # exceptions: IOException and TimeoutException
+            retries: ${GATEWAY_RETRIES:3}
+            methods: ${GATEWAY_RETRY_METHODS:GET,POST,PUT,PATCH}
+            backoff:
+              firstBackoff: ${GATEWAY_RETRY_FIRST_BACKOFF:1s}
+              maxBackoff: ${GATEWAY_RETRY_MAX_BACKOFF:5s}
+              factor: ${GATEWAY_RETRY_FACTOR:2}
+      routes:
+        - id: front_route
+          uri: ${FRONT_URL:http://localhost:9098}
+          predicates:
+            - Path=/front/**
+          filters:
+            - StripPrefix=1
+

@@ -1,0 +1,23 @@
+server:
+  port: ${SERVER_PORT:9095}
+
+
+ms:
+  properties:
+      cron: ${NEWS_CRON:0 * * * * *}
+
+news:
+  host: http://localhost:9091
+  connect-timeout-millis: 1000
+  response-timeout-millis: 1000
+  transport:
+    topic: news
+
+spring:
+  application:
+    name: news-provider
+  kafka:
+    producer:
+      client-id: news_provider
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      acks: all

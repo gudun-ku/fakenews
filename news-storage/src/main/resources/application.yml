@@ -1,0 +1,26 @@
+server:
+  port: ${SERVER_PORT:9094}
+
+news:
+  topic: news
+
+spring:
+  application:
+    name: news-storage
+  kafka:
+    consumer:
+      client-id: ${KAFKA_CLIENT_ID:news_storage}
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      group-id: sample-group
+      auto-offset-reset: earliest
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/news_db}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:postgres}
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: update
+
