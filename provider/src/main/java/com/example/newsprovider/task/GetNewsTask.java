@@ -1,5 +1,6 @@
 package com.example.newsprovider.task;
 
+import com.example.newsprovider.annotation.Clustered;
 import com.example.newsprovider.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,9 @@ public class GetNewsTask {
 
     private final NewsService newsService;
 
-    //@Scheduled(cron = "${ms.properties.cron}")
-    @Scheduled(fixedRate = 10000)
+
+    @Clustered
+    @Scheduled(cron = "${ms.properties.cron}")
     public void run() {
         newsService.getAndPublishNews();
     }

@@ -9,13 +9,15 @@ import java.util.UUID;
 
 public class NewsMapper {
 
-    public  static NewsDTO sourceToSink(SourceNewsDTO source) {
+    public static NewsDTO sourceToSink(SourceNewsDTO source) {
+        /*
+        internalId идет Null от провайдера для фильтрации.
+         */
         return NewsDTO.builder()
                 .id(UUID.nameUUIDFromBytes((source.getId() + source.getTitle()).getBytes(StandardCharsets.UTF_8)))
                 .title(source.getFlash() ? source.getTitle().toUpperCase() : source.getTitle())
                 .content(source.getContent())
                 .pubDate(source.getPubDate().atOffset(ZoneOffset.UTC)) //все храним в UTC
                 .build();
-
     }
 }

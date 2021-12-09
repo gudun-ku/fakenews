@@ -11,12 +11,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:{{servicePort}}/v1/news/",
+					"raw": "http://localhost:9091/v1/news/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "{{servicePort}}",
+					"port": "9091",
 					"path": [
 						"v1",
 						"news",
@@ -60,6 +60,26 @@
 					"port": "8080",
 					"path": [
 						"front",
+						"news",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API-GW News ALL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9098/news/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9098",
+					"path": [
 						"news",
 						"all"
 					]

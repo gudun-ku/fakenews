@@ -5,6 +5,7 @@ server:
 ms:
   properties:
       cron: ${NEWS_CRON:0 * * * * *}
+      clustered: ${CLUSTERED:true}
 
 news:
   host: http://localhost:9091

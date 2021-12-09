@@ -19,6 +19,7 @@ import java.util.UUID;
 public class News {
     @Id
     private UUID uuid;
+    private UUID internalId;
     private String title;
     private String content;
     private OffsetDateTime pubDate;

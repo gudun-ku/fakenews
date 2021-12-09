@@ -1,12 +1,10 @@
 package com.example.newsstorage.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.OffsetDateTime;
@@ -21,6 +19,7 @@ import java.util.UUID;
 public class News {
     @Id
     private UUID uuid;
+    private UUID internalId;
     private String title;
     private String content;
     private OffsetDateTime pubDate;

@@ -12,14 +12,20 @@ import org.springframework.stereotype.Component;
 import reactor.kafka.receiver.KafkaReceiver;
 import reactor.kafka.receiver.ReceiverRecord;
 
+import java.util.UUID;
+
 
 @Component
 @Slf4j
 public class KafkaNewsConsumer {
 
+    /*
+    Настраиваем Mapper для корректной работы с OffsetDateTime
+     */
     private static final ObjectMapper MAPPER = JsonMapper.builder()
             .addModule(new JavaTimeModule())
-            .build();;
+            .build();
+    ;
 
     private final KafkaReceiver<String, NewsDTO> kafkaReceiver;
     private final NewsService newsService;
@@ -31,7 +37,10 @@ public class KafkaNewsConsumer {
 
     public void consumeMessages() {
         kafkaReceiver.receive()
-//                .filter(r -> r.value().getRequester() == null)
+                /*
+                Фильтруем записи по отсутствию внутреннего идентификатора (internalId == null)
+                 */
+                .filter(r -> r.value().getInternalId() == null)
                 .doOnNext(r -> {
                     processRecord(r);
                     r.receiverOffset().acknowledge();
@@ -40,23 +49,25 @@ public class KafkaNewsConsumer {
                 .subscribe();
     }
 
-
     private void processRecord(ReceiverRecord<String, NewsDTO> r) {
         NewsDTO dto = r.value();
         News news = new News();
-
         news.setUuid(dto.getId());
         news.setTitle(dto.getTitle());
         news.setContent(dto.getContent());
         news.setPubDate(dto.getPubDate());
+        /*
+        При записи в базу устанавливаем internalId = new UUID()
+         */
+        news.setInternalId(UUID.randomUUID());
 
 
         newsService.create(news);
         try {
             String json = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(news);
-            log.info("Received message:\n {}", json);
+            log.info("Принято сообщение от kafka:\n {}", json);
         } catch (JsonProcessingException e) {
-            log.error("Error processing record:", e);
+            log.error("Ошибка обработки сообщения: ", e);
         }
     }
 }

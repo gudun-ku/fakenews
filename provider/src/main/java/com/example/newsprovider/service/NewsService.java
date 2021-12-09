@@ -20,6 +20,6 @@ public class NewsService {
         client.getLatestNews()
                 .map(NewsMapper::sourceToSink)
                 .flatMap(transport::publishNews)
-                .subscribe(message -> log.info("Новость {} отправлена", message));
+                .subscribe(message -> log.info("Обработка новости {} выполнена", message));
     }
 }

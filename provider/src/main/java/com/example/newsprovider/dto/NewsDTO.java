@@ -10,6 +10,7 @@ import java.util.UUID;
 @Data
 @Builder(toBuilder = true)
 public class NewsDTO {
+    private UUID internalId;
     private UUID id;
     private String title;
     private String content;
