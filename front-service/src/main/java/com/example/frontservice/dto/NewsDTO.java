@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class NewsDTO {
     private UUID id;
+    private UUID internalId;
     private String title;
     private String content;
     private OffsetDateTime pubDate;

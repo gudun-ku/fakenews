@@ -16,9 +16,9 @@ public class GetNewsTask {
 
     private final NewsService newsService;
 
-    //@Scheduled(cron = "${ms.properties.cron}")
+
     @Clustered
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(cron = "${ms.properties.cron}")
     public void run() {
         newsService.getAndPublishNews();
     }

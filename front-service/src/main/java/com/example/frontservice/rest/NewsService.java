@@ -22,9 +22,16 @@ public class NewsService {
     }
 
     public Mono<Integer> publishAllNews() {
+        /*
+        Здесь тоже можно было вывести в mapper сервис, но для упрощения прямо в паблишере
+         */
         var newsToSend =  repository.findAll()
                 .stream().sorted(Comparator.comparing(News::getPubDate))
-                .map(news -> new NewsDTO(news.getUuid(), news.getTitle(), news.getContent(), news.getPubDate()))
+                .map(news -> new NewsDTO(news.getUuid(),
+                        news.getInternalId(),
+                        news.getTitle(),
+                        news.getContent(),
+                        news.getPubDate()))
                 .collect(Collectors.toUnmodifiableList());
 
         newsToSend.forEach(newsDTO -> producer.publishNews(newsDTO).subscribe());
